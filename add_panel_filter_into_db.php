@@ -14,34 +14,46 @@ require_once('tools/tools.php');
 <body>
 
 
-<?php  echo $_POST['workshop'];
+<?php  echo '<table border="1"><tr><td>'.$_POST['workshop'].'</td></tr></table>';
 if (isset($_POST['filter_name'])){
     $filter_name = $_POST['filter_name'];
 } else {
     $filter_name = '';
 }
 
-if (isset($_POST['analog_filter'])){
+if (isset($_POST['analog_filter']) AND ($_POST['analog_filter'] != '')){
     $analog_filter = $_POST['analog_filter'];
     /** Если аналог установлен то загружаем всю информацию в поля о аналоге */
-    if ($analog_filter != ''){
-        echo "<p>ANALOG_FILTER=".$analog_filter;
-        // массив для записи всех значений аналога
-         $analog_data = get_filter_data($analog_filter);
-         //var_dump(get_filter_data($analog_filter));
+    echo "<p>ANALOG_FILTER=".$analog_filter;
+    // массив для записи всех значений аналога
+    $analog_data = get_filter_data($analog_filter);
+    //var_dump(get_filter_data($analog_filter));
 
-    } else{
-        echo "<p> Аналог не установлен";
-    }
-
-
+}else{
+    echo "<p> Аналог не определен";
+    $analog_data = array();
+    $analog_data['paper_package_length'] ='';
+    $analog_data['paper_package_width'] ='';
+    $analog_data['paper_package_height'] ='';
+    $analog_data['paper_package_pleats_count'] ='';
+    $analog_data['paper_package_amplifier'] ='';
+    $analog_data['paper_package_remark'] ='';
+    $analog_data['paper_package_supplier'] ='';
+    $analog_data['wireframe_length'] ='';
+    $analog_data['wireframe_width'] ='';
+    $analog_data['wireframe_material'] ='';
+    $analog_data['wireframe_supplier'] ='';
+    $analog_data['prefilter_length'] ='';
+    $analog_data['prefilter_width'] ='';
+    $analog_data['prefilter_material'] ='';
+    $analog_data['prefilter_supplier'] ='';
+    $analog_data['prefilter_remark'] ='';
+    $analog_data['box'] ='';
+    $analog_data['g_box'] ='';
+    $analog_data['comment'] ='';
 }
 
-
-
-
 ?>
-
 
 <form action="processing_add_panel_filter_into_db.php" method="post" >
     <label><b>Наименование фильтра</b>
