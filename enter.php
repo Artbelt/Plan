@@ -157,11 +157,12 @@ echo "<tr align='center'><td>"
 /**                                                 Раздел ПРИЛОЖЕНИЯ                                                */
 /** ---------------------------------------------------------------------------------------------------------------- */
     ."Управление данными <p>"
+    /**
         ."<form action='add_filter_into_db.php' method='post'>"
         ."<input type='hidden' name='workshop' value='$workshop'>"
-        ."<input type='submit'  value='добавить фильтр в БД(simple)'  style=\"height: 20px; width: 220px\">"
+        ."<input type='submit'  value='добавить фильтр в БД-----ххх'  style=\"height: 20px; width: 220px\">"
         ."</form>"
-
+    */
         /** Добавление полной информации по фильтру  */
         . "<form action='add_panel_filter_into_db.php' method='post'>"
         ."<input type='hidden' name='workshop' value='$workshop'>"
