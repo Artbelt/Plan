@@ -46,7 +46,7 @@
 
         function add_to_list() {
 
-            var count = document.getElementsByTagName("input")[3].value;               // количество выпущенной продукции
+            var count = document.getElementsByTagName("input")[2].value;               // количество выпущенной продукции
             if (count == ""){
                 alert("Не указано количество");
                 return;
@@ -76,6 +76,7 @@
             //проверка таблицы с выпущенной продукцией
             let filter_list = document.getElementById('maked_filters');
             let size = filter_list.length;
+
             if (size === 0){
                 alert("Не выбраны фильтры");
                 return;
@@ -119,9 +120,13 @@
             calendar_box.value = "dd-mm-yy";
             let select = document.getElementById("maked_filters");
             let length = select.options.length;
+            alert(length);
             for (let i = 0; i < length; i++) {
-                select.options[i] = null;
+                select.options.item(0).remove(); // не понятный костыль
+                //select.options[i] = null; // в какой-то момент перестало работать
+                alert(i);
             }
+
         }
     </script>
 
@@ -133,17 +138,15 @@
             <input type="text" id="text" size="10" maxlength="15" value="" onkeyup="loadDoc_1()" />
         </td>
         <td rowspan="2" align="center" bgcolor="#1e90ff">
-            <p>Выпущенная продукция<p>
+            <p>Дата производства<p>
                 <input type="text" id="calendar" value="dd-mm-yy" onfocus="this.select();lcs(this)" onclick="event.cancelBubble=true;this.select();lcs(this)">
                <p id="final_list"></p>
+                Выпущенная продукция <p>
                 <select id="maked_filters" name="filters" size="10"><!--Список выпущенной продукции -->
                 </select>
                 <br>
                 по заявке № <br>
                <?php load_orders() ?>
-
-                <input type="button" onclick="send_filters_to_write_off()" value="Провести выпуск продукции"/>
-
         </td></tr>
     <tr>
         <td align="center" bgcolor="#1e90ff">
@@ -151,15 +154,16 @@
                 <select id="select_filter" size="1"></select>
             </p>
             Кол-во  <input type="text" id="count" size="10" maxlength="15" value="" />
-        </td></td>
-    </tr>    <tr>
+        <td></td>
+    </tr>
+    <tr>
         <td align="center" bgcolor="#1e90ff">
             <button onclick="add_to_list()" style="width: 150px">Добавить в перечень</button>
-        </td><td align="center" bgcolor="#1e90ff">
+        </td>
+        <td align="center" bgcolor="#1e90ff">
 
             <p id="summ"></p>
-                <br>
-
+                 <input type="button" onclick="send_filters_to_write_off()" value="Провести выпуск продукции"/>
             </td>
     </tr>
 </table>
