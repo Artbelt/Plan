@@ -363,7 +363,7 @@ class Planned_order
 
 //$this->show_cut_array();
 
-        for ($a = 0; $a < 40; $a++){
+        for ($a = 0; $a < 150; $a++){ /** КОличество повторов при не резултативном цикле */
 
         array_splice($temp_roll,0);
         $total_width = 0;
