@@ -582,4 +582,71 @@ function component_analysis_paper_package($order_number){
     echo '</table>';
 }
 
+/** Расчет  необходимого количества групповых ящиков для выполнения заявки*/
+function component_analysis_group_box($order_number){
+
+    // шапка таблицы
+    echo '<table style=" border-collapse: collapse;">';
+    echo '<tr><td colspan="4"><h3 style="font-family: Calibri; size: 20px;text-align: center">Заявка</h3></td></tr>';
+    echo '<tr><td colspan="4">на поставку ящиков груповых для: У2</td></tr>';
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td>№п/п</td><td>Комплектующее</td><td>Кол-во</td><td>Дата поставки</td></tr>';
+
+    // запрос для выборки необходимых каркасов для выполнения заявки
+    $sql = "SELECT orders.filter, panel_filter_structure.paper_package, panel_filter_structure.g_box, orders.count ".
+        "FROM orders, panel_filter_structure ".
+        "WHERE orders.order_number='$order_number' ".
+        "AND orders.filter = panel_filter_structure.filter ".
+        "AND panel_filter_structure.g_box!='';";
+
+    $result = mysql_execute($sql);
+
+    $i=1;// счетчик циклов для отображения в таблице порядкового номера
+    foreach ($result as $value){
+
+        echo '<tr><td>'.$i.'</td><td>'.$value['g_box'].'</td><td>'.round(($value['count']/10)).'</td><td><input type="text"></td>';
+        $i++;
+    }
+
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td colspan="2">Дата составления заявки:</td><td colspan="2">'.date('d.m.y ').'</td></tr>';
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td colspan="2">Заявку составил:</td><td colspan="2"><input type="text"></td></tr>';
+    echo '</table>';
+}
+
+
+/** Расчет  необходимого количества коробок индивидуальных для выполнения заявки*/
+function component_analysis_box($order_number){
+
+    // шапка таблицы
+    echo '<table style=" border-collapse: collapse;">';
+    echo '<tr><td colspan="4"><h3 style="font-family: Calibri; size: 20px;text-align: center">Заявка</h3></td></tr>';
+    echo '<tr><td colspan="4">на поставку коробок индивидуальных для: У2</td></tr>';
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td>№п/п</td><td>Комплектующее</td><td>Кол-во</td><td>Дата поставки</td></tr>';
+
+    // запрос для выборки необходимых каркасов для выполнения заявки
+    $sql = "SELECT orders.filter, panel_filter_structure.paper_package, panel_filter_structure.box, orders.count ".
+        "FROM orders, panel_filter_structure ".
+        "WHERE orders.order_number='$order_number' ".
+        "AND orders.filter = panel_filter_structure.filter ".
+        "AND panel_filter_structure.box!='';";
+
+    $result = mysql_execute($sql);
+
+    $i=1;// счетчик циклов для отображения в таблице порядкового номера
+    foreach ($result as $value){
+
+        echo '<tr><td>'.$i.'</td><td>'.$value['g_box'].'</td><td>'.round(($value['count']/10)).'</td><td><input type="text"></td>';
+        $i++;
+    }
+
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td colspan="2">Дата составления заявки:</td><td colspan="2">'.date('d.m.y ').'</td></tr>';
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td colspan="2">Заявку составил:</td><td colspan="2"><input type="text"></td></tr>';
+    echo '</table>';
+}
+
 ?>
