@@ -120,7 +120,7 @@
             calendar_box.value = "dd-mm-yy";
             let select = document.getElementById("maked_filters");
             let length = select.options.length;
-            alert(length);
+            //alert(length);
             for (let i = 0; i < length; i++) {
                 select.options.item(0).remove(); // не понятный костыль
                 //select.options[i] = null; // в какой-то момент перестало работать
