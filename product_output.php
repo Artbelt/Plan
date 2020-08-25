@@ -124,7 +124,7 @@
             for (let i = 0; i < length; i++) {
                 select.options.item(0).remove(); // не понятный костыль
                 //select.options[i] = null; // в какой-то момент перестало работать
-                alert(i);
+               // alert(i);
             }
 
         }
