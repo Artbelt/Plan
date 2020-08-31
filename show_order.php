@@ -3,6 +3,9 @@
 require_once('tools/tools.php');
 require_once('settings.php');
 
+require_once ('style/table.txt');
+
+
 /** Номер заявки которую надо нарисовать */
 $order_number = $_POST['order_number'];
 
@@ -42,7 +45,7 @@ $result = show_order($order_number);
 /** Разбор массива значений по подключению */
 while ($row = $result->fetch_assoc()){
     $difference = (int)$row['count']-(int)select_produced_filters_by_order($row['filter'],$order_number)[1];
-    echo "<tr>"
+    echo "<tr style='hov'>"
         ."<td>".$row['filter']."</td>"
         ."<td>".$row['count']."</td>"
         ."<td>".$row['marking']."</td>"

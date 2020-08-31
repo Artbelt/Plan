@@ -626,8 +626,8 @@ function component_analysis_box($order_number){
     echo '<tr><td colspan="4"><pre> </pre></td></tr>';
     echo '<tr><td>№п/п</td><td>Комплектующее</td><td>Кол-во</td><td>Дата поставки</td></tr>';
 
-    // запрос для выборки необходимых каркасов для выполнения заявки
-    $sql = "SELECT orders.filter, panel_filter_structure.paper_package, panel_filter_structure.box, orders.count ".
+    // запрос для выборки необходимых коробок индивидуальных для выполнения заявки
+    $sql = "SELECT panel_filter_structure.box, orders.count ".
         "FROM orders, panel_filter_structure ".
         "WHERE orders.order_number='$order_number' ".
         "AND orders.filter = panel_filter_structure.filter ".
@@ -635,10 +635,19 @@ function component_analysis_box($order_number){
 
     $result = mysql_execute($sql);
 
+    //----------------------------блок сложения одинаковых позиций------------------------------------------------------
+    $temp_array = array();
+
+    foreach ($result as $item) {
+        array_push($temp_array,$item);
+    }
+    var_dump($temp_array);
+    //------------------------------------------------------------------------------------------------------------------
+
     $i=1;// счетчик циклов для отображения в таблице порядкового номера
     foreach ($result as $value){
 
-        echo '<tr><td>'.$i.'</td><td>'.$value['g_box'].'</td><td>'.round(($value['count']/10)).'</td><td><input type="text"></td>';
+        echo '<tr><td>'.$i.'</td><td>'.$value['box'].'</td><td>'.round(($value['count']/10)).'</td><td><input type="text"></td>';
         $i++;
     }
 
