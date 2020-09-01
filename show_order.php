@@ -42,9 +42,17 @@ echo "<table style='border: 1px solid black; border-collapse: collapse; font-siz
 /** Загружаем из БД заявку */
 $result = show_order($order_number);
 
+/** Переменная для подсчета суммы фильтров в заявке */
+$filter_count_in_order = 0;
+
+/** Переменная для подсчета количества сделанных фильтров */
+$filter_count_produced = 0;
+
 /** Разбор массива значений по подключению */
 while ($row = $result->fetch_assoc()){
     $difference = (int)$row['count']-(int)select_produced_filters_by_order($row['filter'],$order_number)[1];
+    $filter_count_in_order = $filter_count_in_order + (int)$row['count'] ;
+    $filter_count_produced = $filter_count_produced + (int)select_produced_filters_by_order($row['filter'],$order_number)[1];
     echo "<tr style='hov'>"
         ."<td>".$row['filter']."</td>"
         ."<td>".$row['count']."</td>"
@@ -60,7 +68,25 @@ while ($row = $result->fetch_assoc()){
         ."</tr>";
 }
 
+$summ_difference = $filter_count_in_order - $filter_count_produced;
+echo "<tr style='hov'>"
+    ."<td>Итого:</td>"
+    ."<td>".$filter_count_in_order."</td>"
+    ."<td></td>"
+    ."<td></td>"
+    ."<td></td>"
+    ."<td></td>"
+    ."<td></td>"
+    ."<td></td>"
+    ."<td></td>"
+    ."<td>".$filter_count_produced."</td>"
+    ."<td>".$summ_difference."</td>"
+    ."</tr>";
+
 echo "</table>";
+
+//echo "Количество фильтров в заявке: ".$filter_count_in_order;
+//echo "Количество фильтров изготовлено: ".$filter_count_produced;
 
 /** Кнопка перехода в режим планирования для У2*/
 echo "<br><form action='order_planning_U2.php' method='post'>"
