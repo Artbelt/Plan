@@ -635,48 +635,10 @@ function component_analysis_box($order_number){
 
     $result = mysql_execute($sql);
 
-    //объединяем одинаковые позиции
-    $temp_array = array();
-    $box_array = array();
-    $result_box_array = array();
-
     $i=1;// счетчик циклов для отображения в таблице порядкового номера
     foreach ($result as $value){
-        array_push($temp_array,$value['box'],$value['count']);
-        array_push($box_array,$temp_array);
-        array_splice($temp_array,0);
-        $i++;
-    }
 
-
-    echo '<pre>';
-    var_dump($box_array);
-//------------------------------------------------------------комбинирование результата----------------------
-    for ($a=0; $a<count($box_array);$a++){
-
-
-        // добавляем этот элемент в массив итоговый, проверяем есть ли такой, проходя весь итоговый массив
-        if (!in_array($box_array[$a][0],$result_box_array)){
-           //если нет такого элемента то добавляем
-            array_push($result_box_array, $box_array[$a]);
-            //удаляем перенесенный элемент из массива
-            unset($box_array[$a]);
-        } else{
-           // $f=array_search($box_array[$a],$result_box_array);
-           // $result_box_array[$f][1] = $result_box_array[$f][1] + $box_array[$a][1];
-            unset($box_array[$a]);
-        }
-    }
-    echo '<pre>';
-    var_dump($result_box_array);
-
-//-------------------------------------------------------------------------------------------------------------------------
-
-
-    $i=1;// счетчик циклов для отображения в таблице порядкового номера
-    foreach ($result_box_array as $value){
-
-        echo '<tr><td>'.$i.'</td><td>'.$value[0].'</td><td>'.$value[1].'</td><td><input type="text"></td>';
+        echo '<tr><td>'.$i.'</td><td>'.$value['box'].'</td><td>'.round(($value['count']/10)).'</td><td><input type="text"></td>';
         $i++;
     }
 

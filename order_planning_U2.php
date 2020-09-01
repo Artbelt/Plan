@@ -2,6 +2,8 @@
 require_once('tools/tools.php');
 require_once('settings.php');
 
+require_once ('style/table_1.txt');
+
 /** Номер заявки которую надо нарисовать */
 $order_number = $_POST['order_number'];
 
