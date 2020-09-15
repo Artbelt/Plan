@@ -537,7 +537,6 @@ function get_filter_data($target_filter){
     return $result_array;
 }
 
-
 /** Расчет  необходимого количества каркасов для выполнения запявки*/
 function component_analysis_wireframe($order_number){
 
