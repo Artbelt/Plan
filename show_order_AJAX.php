@@ -14,7 +14,7 @@ global $width_of_main_roll;
 $order_number = $_POST['order_number'];
 
 /** Отображаем позиции заявки */
-//show_order($order_number);                                                                             //---------
+show_order($order_number);                                                                             //---------
 
 /** Создаем объект планирования заявки */
 $initial_order = new Planned_order;

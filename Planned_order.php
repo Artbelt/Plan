@@ -295,7 +295,8 @@ class Planned_order
     /** соритровка cut_array массива по убыванию высоты валков*/
     public function sort_cut_array(){
         usort($this->cut_array, function($a, $b){
-            return ($b[1] - $a[1]);
+            //return ($b[1] - $a[1]);
+            return ($b[2] - $a[2]);
         });
     }
 
@@ -355,13 +356,8 @@ class Planned_order
         $start_cycle =0;
         $round_complete = true;
 
-
-//$this->show_cut_array();
-
         /** Сортировка cut-массива по валкам */
        $this->sort_cut_array();
-
-//$this->show_cut_array();
 
         for ($a = 0; $a < 150; $a++){ /** КОличество повторов при не резултативном цикле */
 
@@ -410,8 +406,6 @@ class Planned_order
                         /** добавляем собранный рулон в completed_rolls */
                         array_push($this->completed_rolls, $temp_roll);
 
-
-                        //$this->show_completed_rolls();
                         $count_of_completed_rolls++;
                         $this->$round_complete = true;
                     }

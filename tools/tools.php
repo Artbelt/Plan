@@ -210,6 +210,51 @@ function show_order($order_number){
 
 }
 
+/** Функция складывает одинаковые элементы массива. ПРимер
+ *      [[1][100]    =>  [[1][140]
+ *       [2][ 50]         [2][100]
+ *       [2][ 50]         [3][ 10]]
+ *       [1][ 40]
+ *       [3][ 10]]
+ */
+function summ_the_same_elements_of_array($input_array){
+
+    $finish_array = array();
+    $summ = 0;
+    $x = 0;
+    $b = 0;
+    $c = 0;
+    $size = count($input_array) - 1;
+    for ($n = 0; $n <= $size; $n++) {
+
+        if ($n == $size) {
+            $a = $input_array[$size][0];
+            $summ += $input_array[$n][1];
+            $x++;
+            array_push($finish_array, array($a,$summ));
+            $summ = 0;
+        } else {
+            $a = $input_array[$n][0];
+            $b = $input_array[$n + 1][0];
+            $c = $b - $a;
+
+            switch ($c) {
+                case 0:
+                    $summ += $input_array[$n][1];
+                    break;
+                case ($c != 0):
+                    $summ += $input_array[$n][1];
+                    $x++;
+                    array_push($finish_array, array($a,$summ));
+                    $summ = 0;
+                    break;
+            }
+        }
+    }
+    return $finish_array;
+}
+
+
 /** Функция из заявки возвращает массив вида ...[[filter][count]][[filter][count]] */
 function get_order($order_number){
 
@@ -585,13 +630,6 @@ function component_analysis_paper_package($order_number){
 /** Расчет  необходимого количества групповых ящиков для выполнения заявки*/
 function component_analysis_group_box($order_number){
 
-    // шапка таблицы
-    echo '<table style=" border-collapse: collapse;">';
-    echo '<tr><td colspan="4"><h3 style="font-family: Calibri; size: 20px;text-align: center">Заявка</h3></td></tr>';
-    echo '<tr><td colspan="4">на поставку ящиков груповых для: У2</td></tr>';
-    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
-    echo '<tr><td>№п/п</td><td>Комплектующее</td><td>Кол-во</td><td>Дата поставки</td></tr>';
-
     // запрос для выборки необходимых каркасов для выполнения заявки
     $sql = "SELECT orders.filter, panel_filter_structure.paper_package, panel_filter_structure.g_box, orders.count ".
         "FROM orders, panel_filter_structure ".
@@ -601,14 +639,31 @@ function component_analysis_group_box($order_number){
 
     $result = mysql_execute($sql);
     $temp_array = array(); // массив для сложения одинковых элементов
-    $little_array = array(); // массив для создания массива сложения
+
+    foreach ($result as $value){
+        array_push($temp_array,array($value['g_box'],$value['count']));
+    }
+
+    function compare($a, $b){ // функция для сортировки массива в usort
+        if ($a == $b){
+            return 0;
+        }
+        return ($a < $b) ? -1 : 1;
+    }
+    usort($temp_array,"compare");
+
+
+    $temp_array = summ_the_same_elements_of_array($temp_array);
+
+    echo '<table style=" border-collapse: collapse;">';
+    echo '<tr><td colspan="4"><h3 style="font-family: Calibri; size: 20px;text-align: center">Заявка</h3></td></tr>';
+    echo '<tr><td colspan="4">на поставку ящиков груповых для: У2</td></tr>';
+    echo '<tr><td colspan="4"><pre> </pre></td></tr>';
+    echo '<tr><td>№п/п</td><td>Комплектующее</td><td>Кол-во</td><td>Дата поставки</td></tr>';
 
     $i=1;// счетчик циклов для отображения в таблице порядкового номера
-    foreach ($result as $value){
-        array_push($little_array, $value['g_box'],$value['count']);
-        array_push($temp_array,$little_array);
-        array_splice($little_array,0);
-        echo '<tr><td>'.$i.'</td><td>'.$value['g_box'].'</td><td>'.round(($value['count']/10)).'</td><td><input type="text"></td>';
+    foreach ($temp_array as $value){
+        echo '<tr><td>'.$i.'</td><td>'.$value[0].'</td><td>'.round(($value[1]/10)).'</td><td><input type="text"></td>';
         $i++;
     }
 
@@ -617,91 +672,6 @@ function component_analysis_group_box($order_number){
     echo '<tr><td colspan="4"><pre> </pre></td></tr>';
     echo '<tr><td colspan="2">Заявку составил:</td><td colspan="2"><input type="text"></td></tr>';
     echo '</table>';
-
-    var_dump($temp_array);
-
-/*    function summ_array($input_array){  // недоделанный вариант функции сложения
-
-        var_dump($input_array);
-        array_multisort($input_array[0],SORT_ASC );
-        var_dump($input_array);
-
-        $fourth_temp_array = array(); //вспомагательный массив для удаления записей
-
-            $box = $input_array[0][0];
-            $count = 0;
-            $second_temp_array = array(); // вспомагательный массив для сложения
-            $third_temp_array = array(); // вспомагательный массив для формирования массива вывода
-
-            foreach ($input_array as $value) { // проверяем каждый элемент массива на совпадение
-
-                if ($value[0] == $box) {    // если такая же коробка
-                    $count = $count + $value[1];
-                }
-            }
-            array_push($third_temp_array, $box);
-            array_push($third_temp_array, $count);
-            array_push($second_temp_array, $third_temp_array);
-
-            foreach ($input_array as $value) { // проверяем каждый элемент массива на совпадение
-                if ($value[0] != $box) {    // если не такая же коробка
-                    array_push($fourth_temp_array, $value);
-                }
-            }
-            $input_array = $fourth_temp_array;
-        return $second_temp_array;
-    }
-
-   $temp_array = summ_array($temp_array);*/
-
-function compare($a, $b){ // функция для сортировки массива в usort
-    if ($a == $b){
-        return 0;
-    }
-    return ($a < $b) ? -1 : 1;
-}
-
-usort($temp_array,"compare");
-
-//    var_dump($temp_array);
-
-    $finish_array = array();
-    $summ = 0;
-    $x = 0;
-    $b = 0;
-    $c = 0;
-    $size = count($temp_array)-1;
-    for ($n = 0; $n <= $size;$n++){
-
-        if ($n == $size){
-            $a = $temp_array[$size][0];
-            $summ += $temp_array[$n][1];
-            $x++;
-            array_push($finish_array, $a);
-            array_push($finish_array, $summ);
-            $summ = 0;
-        } else{
-            $a = $temp_array[$n][0];
-            $b = $temp_array[$n+1][0];
-            $c = $b - $a;
-
-            switch ($c){
-                case 0:
-                    $summ += $temp_array[$n][1];
-                    break;
-                case ($c != 0):
-                    $summ += $temp_array[$n][1];
-                    $x++;
-                    array_push($finish_array, $a);
-                    array_push($finish_array, $summ);
-                    $summ = 0;
-                    break;
-            }
-        }
-    }
-
-    var_dump($finish_array);
-
 
 }
 
