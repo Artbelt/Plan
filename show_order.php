@@ -63,9 +63,16 @@ while ($row = $result->fetch_assoc()){
         ."<td>".$row['packaging_rate']."</td>"
         ."<td>".$row['group_label']."</td>"
         ."<td>".$row['remark']."</td>"
-        ."<td>".select_produced_filters_by_order($row['filter'],$order_number)[1]."</td>"
-        ."<td>".$difference."</td>"
-        ."</tr>";
+        ."<td>".(int)select_produced_filters_by_order($row['filter'],$order_number)[1]."</td>" //изготовлено
+        ."<td>".$difference."</td>";                                                             //осталось изготовить
+        //."</tr>";
+        if ($row['filter'] == 'SX1748 (без маркування)'){
+            echo "</tr><tr><td>!!!!!!!!!!!!!!!</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+        } else{
+            echo "</tr>";
+        }
+
+
 }
 
 $summ_difference = $filter_count_in_order - $filter_count_produced;

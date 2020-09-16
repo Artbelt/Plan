@@ -246,7 +246,7 @@ function summ_the_same_elements_of_array($input_array){
         } else {
             $a = $input_array[$n][0];
             $b = $input_array[$n + 1][0];
-            $c = $b - $a;
+            $c = (int)$b - (int)$a;
 
             switch ($c) {
                 case 0:
