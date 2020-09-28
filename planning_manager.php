@@ -11,6 +11,18 @@
 <?php load_orders(); ?><button onclick="load_order(document.getElementById('selected_order'))">Сформировать раскрои</button>
 <br>
 
+<script>
+        function CallPrint() {
+            var newWindow = window.open();
+            newWindow.document.write('ЗАДАНИЕ НА ПОРЕЗКУ РУЛОНОВ');
+            newWindow.document.write(document.getElementById("print-content").innerHTML);
+            newWindow.document.write('<p>Задание составил:_______________');
+            newWindow.document.write('<p>Дата создания:');
+            newWindow.document.write();
+            newWindow.print();
+        }
+</script>
+
 <script> /* Загрузка заявки */
     function load_order(object_id){
 

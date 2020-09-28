@@ -168,7 +168,7 @@ class Planned_order
     public function show_order(){
 
         echo "<table  style='border: 1px solid black; border-collapse: collapse; font-size: 14px;'>";
-        echo "<tr><td colspan='7' style='background-color: #ff6200; text-align: center; color: white'>СЕРВИСНАЯ ИНФОРМАЦИЯ</td></tr>";
+        echo "<tr><td colspan='7' style='background-color: #ff6200; text-align: center; color: white'>СЕРВИСНАЯ ИНФОРМАЦИЯ: РАСЧЕТ КОЛИЧЕСТВА РУЛОНОВ</td></tr>";
         echo "<tr><td style=' border: 1px solid black'>Фильтр</td><td style=' border: 1px solid black'>Кол-во</td><td style=' border: 1px solid black'>Высота г/п</td><td style=' border: 1px solid black'>Ширина г/п</td><td style=' border: 1px solid black'>Число ребер</td><td style=' border: 1px solid black'>Кол-во из рулона</td><td style=' border: 1px solid black'>Необходимое количество рулонов</td></tr>";
         for ($x = 0; $x < (count($this->initial_order)-1); $x++){
             echo "<tr>";
@@ -188,13 +188,19 @@ class Planned_order
 
     /** отрисовка cut-массива */
     public function show_cut_array(){
-        echo "filter______PPheight________PPwidth<br>";
+
+        echo "<table  style='border: 1px solid black; border-collapse: collapse; font-size: 14px;'>";
+        echo "<tr><td colspan='3' style='background-color: #ff6200; text-align: center; color: white'>СЕРВИСНАЯ ИНФОРМАЦИЯ: МАССИВ ДЛЯ РАСЧЕТА</td></tr>";
+        echo "<tr><td style=' border: 1px solid black'>Фильтр</td><td style=' border: 1px solid black'>Высота г/п</td><td style=' border: 1px solid black'>Ширина г/п</td>";
         for ($x = 0; $x < (count($this->cut_array)-1); $x++){
-            echo $this->cut_array[$x][0]."__________";
-            echo $this->cut_array[$x][1]."__________";
-            echo $this->cut_array[$x][2]."__________";
-            echo "<br>";
+            echo "<tr>";
+            echo "<td style=' border: 1px solid black'>".$this->cut_array[$x][0]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->cut_array[$x][1]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->cut_array[$x][2]."</td>";
+            echo "</tr>";
         }
+        echo "";
+        echo "</table>";
     }
 
     /** отрисовка test_cut-массива */
@@ -217,8 +223,9 @@ class Planned_order
         echo "<hr>";
         echo "В раскрой было добавлено ".$statistic_completed_rolls_count." рулон(ов)<p>";
 
+
         //Ограничиваем блок для печати
-        echo "<div id='order-print'>";
+        echo "<div id='print-content'><p>";
 
         //Выводим таблицы с раскроями
 
@@ -263,7 +270,8 @@ class Planned_order
         //Ограничиваем блок для печати
         echo "</div><p>";
 
-        echo "<button name=\"send\" onclick=\"print()\">Распечатать задание в порезку</button><p>";
+        //Кнопка печати раскроев
+        echo "<button onclick='CallPrint();'>Распечатать задание в порезку</button><p>";
 
     }
 

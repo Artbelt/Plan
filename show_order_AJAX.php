@@ -14,7 +14,7 @@ global $width_of_main_roll;
 $order_number = $_POST['order_number'];
 
 /** Отображаем позиции заявки */
-show_order($order_number);                                                                             //---------
+show_order($order_number);                                                                             //---------SERVICE_FUNCTION_MUST_BE_HIDE
 
 /** Создаем объект планирования заявки */
 $initial_order = new Planned_order;
@@ -38,10 +38,10 @@ $initial_order->cut_array_init();
 $initial_order->sort_cut_array();
 
 /** отображаем заявку с загруженными данными по г/пакетам*/
-$initial_order->show_order();                                                                           //--------
+$initial_order->show_order();                                                                           //--------SERVICE_FUNCTION_MUST_BE_HIDE
 
 /** отображаем cut_array массив подготовленный для раскроя*/
-//$initial_order->show_cut_array();                                                                       //---------
+$initial_order->show_cut_array();                                                                       //---------SERVICE_FUNCTION_MUST_BE_HIDE
 
 /** Делаем раскрой */
 $initial_order->cut_execute($width_of_main_roll, $max_gap, $min_gap);
