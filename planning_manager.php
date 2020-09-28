@@ -1,9 +1,10 @@
 <?php /** Менеджер планирования заявки */
     require_once('tools/tools.php');
     require_once('settings.php');
+
  ?>
 
-<div id="header" style="background-color: #5450ff; height: 50px; width: 100%; font-family: Calibri; f; font-size: 20">
+<div id="header" style="background-color: #5450ff; height: 50px; width: 100%; font-family: Calibri; font-size: 20px">
     <p style="color: white">Менеджер планирования заявки:</p>
 </div>
 
