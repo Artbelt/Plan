@@ -166,17 +166,24 @@ class Planned_order
 
     /** отрисовка заявки */
     public function show_order(){
-        echo "filter_______count_______PPheight________PPwidth________PPpleatsCount________count_from_roll________rolls_need<br>";
+
+        echo "<table  style='border: 1px solid black; border-collapse: collapse; font-size: 14px;'>";
+        echo "<tr><td colspan='7' style='background-color: #ff6200; text-align: center; color: white'>СЕРВИСНАЯ ИНФОРМАЦИЯ</td></tr>";
+        echo "<tr><td style=' border: 1px solid black'>Фильтр</td><td style=' border: 1px solid black'>Кол-во</td><td style=' border: 1px solid black'>Высота г/п</td><td style=' border: 1px solid black'>Ширина г/п</td><td style=' border: 1px solid black'>Число ребер</td><td style=' border: 1px solid black'>Кол-во из рулона</td><td style=' border: 1px solid black'>Необходимое количество рулонов</td></tr>";
         for ($x = 0; $x < (count($this->initial_order)-1); $x++){
-            echo $this->initial_order[$x][0]."__________";
-            echo $this->initial_order[$x][1]."__________";
-            echo $this->initial_order[$x][2]."__________";
-            echo $this->initial_order[$x][3]."__________";
-            echo $this->initial_order[$x][4]."_________________";
-            echo $this->initial_order[$x][5]."_________________";
-            echo $this->initial_order[$x][6]."_________________";
-            echo "<br>";
+            echo "<tr>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][0]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][1]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][2]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][3]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][4]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][5]."</td>";
+            echo "<td style=' border: 1px solid black'>".$this->initial_order[$x][6]."</td>";
+            echo "</tr>";
         }
+        echo "";
+        echo "</table>";
+
     }
 
     /** отрисовка cut-массива */

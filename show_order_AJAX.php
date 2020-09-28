@@ -38,7 +38,7 @@ $initial_order->cut_array_init();
 $initial_order->sort_cut_array();
 
 /** отображаем заявку с загруженными данными по г/пакетам*/
-//$initial_order->show_order();                                                                           //--------
+$initial_order->show_order();                                                                           //--------
 
 /** отображаем cut_array массив подготовленный для раскроя*/
 //$initial_order->show_cut_array();                                                                       //---------

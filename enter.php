@@ -4,6 +4,7 @@ session_start();
 
 /** подключение фалйа настроек */
 require_once('settings.php') ;
+require_once('tools/tools.php') ;
 
 echo "<link rel=\"stylesheet\" href=\"sheets.css\">";
 /** ---------------------------------------------------------------------------------------------------------------- */
@@ -223,7 +224,9 @@ echo '<form action="show_order.php" method="post">';
 while ($orders_data = $result->fetch_assoc()){
     if ($workshop == $orders_data['workshop']){
         //echo "<input type='submit' name='".$orders_data['order_number']."' value=".$orders_data['order_number']."><br>";
-        echo "<input type='submit' name='order_number' value=".$orders_data['order_number']." style=\"height: 20px; width: 220px\"><br>";
+        echo "<input type='submit' name='order_number' value=".$orders_data['order_number']." style=\"height: 20px; width: 220px\">"
+            //."<button type=\"button\" onclick='to_hide_order.php' value=".$orders_data['order_number'].">X</button><br>"
+        ;
     }
 }
 
