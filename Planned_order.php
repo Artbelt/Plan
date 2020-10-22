@@ -349,84 +349,100 @@ class Planned_order
     /** Выполняем раскрой */
    public function cut_execute($width_of_main_roll, $max_gap, $min_gap){
 
-   $count_of_completed_rolls = 0;
+        /** @var  $count_of_completed_rolls - количество успешно собраных рулонов */
+        $count_of_completed_rolls = 0;
 
-   /** @var  $round_complete - переменная показывает резултьативность текущего прохода по списку */
+        /** @var  $round_complete - переменная показывает резултьативность текущего прохода по списку */
 
-
+        /** @var  cut_marker маркер выполнения раскроя */
         $this->cut_marker = true;
-  $counter = 0;
+
+        //$counter = 0;                                                                 --------надо грохнуть
+
         /** @var  $temp_roll - временный рулон, используется в роли буфера*/
         $temp_roll = array();
+
         /** @var  $total_width - суммарная ширина позиций, собранных в рулон*/
-  $total_width = 0;
-  $safety_lock=100;
-  $roll_complete = false;
+        $total_width = 0;
+
+        //$safety_lock=100;                                                             --------надо грохнуть
+
+        /** @var  $roll_complete маркер успешного сложения рулона*/
+        $roll_complete = false;
+
         /** @var  $min_width_of_roll - минимальная используемая ширина рулона, например: 1175 = 1200 - 25(максимально-допустимый отход) */
         $min_width_of_roll = $width_of_main_roll - $max_gap;
+
         /** @var  $max_width_of_roll - максимальная используемая ширина рулона, например: 1195 = 1200 - 5(минимальный обрезок) */
         $max_width_of_roll = $width_of_main_roll - $min_gap;
+
         /** @var  $completed_rolls - массив собранных бухт */
         $this->completed_rolls = array();
+
+        /** @var  $start_cycle - переменная указывающая с какой позиции стоит начинать сборку рулона */
         $start_cycle =0;
+
         $round_complete = true;
 
         /** Сортировка cut-массива по валкам */
-       $this->sort_cut_array();
+        $this->sort_cut_array();
 
-        for ($a = 0; $a < 150; $a++){ /** КОличество повторов при не резултативном цикле */
+        for ($a = 0; $a < 150; $a++){ /** Количество повторов при не результативном цикле */
 
-        array_splice($temp_roll,0);
-        $total_width = 0;
+            /** очистка массива используемого в качестве буфера */
+            array_splice($temp_roll,0);
 
-             /** Если рулон не собрался -> смещаем начало обхода на 1 позицию */
-             if ($round_complete){
-                 $start_cycle =0;
-                 $round_complete = false;
-            } else{
-                 /** перемешивание єлементов массива в случае если предыдущий проход был не результативен                   *
-                 /* перемешивание массива происходит, внутри групп с одной высотой валков */
-                 $this->shuffle_cut_array_with_fixed_height();
-            }
-                /** процедура сборки одного рулона */
-                for($x = $start_cycle; $x < count($this->cut_array); $x++){
-                    /** находим минимальной ширины рулон */
-                    $min_roll_size = $this->min_roll_search();
-                    /** находим остаток рулона после добавления текущего рулона */
-                    $ostatok = $max_width_of_roll - $total_width - $this->cut_array[$x][2];
-                    /** если остаток рулона после добавления этой позиции будет больше чем минимальный ролик в массиве cut_array
-                     * или остаток равен минимальному размеру рулона или попадает в диапазон требуемого остатка */
-                    if (($ostatok > $min_roll_size) || ($ostatok == ($min_roll_size)) || (($ostatok > 5) and ($ostatok < 30))) {
-                        /** добавляем в temp_roll cut_array[$x][width] */
-                        array_push($temp_roll, $this->cut_array[$x]);
-                       /** увеличиваем суммарную ширину собираемой бухты */
-                        $total_width = $total_width + $this->cut_array[$x][2];
-                    }else{
-                        /** если остаток рулона после добавления этой позиции будет меньше чем минимальный ролик в массиве -> не трогаем его и переходим дальше*/
-                        continue;
-                    }
-                    /** если ширина рулона попадает в требуемый диапазон */
-                    if (($total_width < $max_width_of_roll) and ($total_width > $min_width_of_roll)){
-                        /** убираем из  cut_array позиции, которые вошли temp_rolls*/
-                                for($y=0; $y < count($temp_roll);$y++){
-                                    $deleted = false;
-                                    for ($c = 0; $c < count($this->cut_array);$c++){
-                                        if(($temp_roll[$y] == $this->cut_array[$c])&(!$deleted)){
-                                            /** удаляем из cut_array запись, существующую в temp_array */
-                                            array_splice($this->cut_array,$c,1);
-                                            $deleted = true;
-                                       }
-                                    }
-                                }
-                        /** добавляем собранный рулон в completed_rolls */
-                        array_push($this->completed_rolls, $temp_roll);
+            /** @var  $total_width - сброс счетчика ширины рулона */
+            $total_width = 0;
 
-                        $count_of_completed_rolls++;
-                        $this->$round_complete = true;
-                    }
-              //  $x++;
+                 /** Если рулон не собрался -> смещаем начало обхода на 1 позицию */
+                 if ($round_complete){
+                     $start_cycle =0;
+                     $round_complete = false;
+                } else{
+                     /** перемешивание элементов массива в случае если предыдущий проход был не результативен
+                      перемешивание массива происходит, внутри групп с одной высотой валков */
+                     $this->shuffle_cut_array_with_fixed_height();
                 }
-                /** конец процедуры сборки одного рулона */
+                    /** процедура сборки одного рулона */
+                    for($x = $start_cycle; $x < count($this->cut_array); $x++){
+                        /** находим минимальной ширины рулон */
+                        $min_roll_size = $this->min_roll_search();
+                        /** находим остаток рулона после добавления текущего рулона */
+                        $ostatok = $max_width_of_roll - $total_width - $this->cut_array[$x][2];
+                        /** если остаток рулона после добавления этой позиции будет больше чем минимальный ролик в массиве cut_array
+                         * или остаток равен минимальному размеру рулона или попадает в диапазон требуемого остатка */
+                        if (($ostatok > $min_roll_size) || ($ostatok == ($min_roll_size)) || (($ostatok > 5) and ($ostatok < 30))) {
+                            /** добавляем в temp_roll cut_array[$x][width] */
+                            array_push($temp_roll, $this->cut_array[$x]);
+                           /** увеличиваем суммарную ширину собираемой бухты */
+                            $total_width = $total_width + $this->cut_array[$x][2];
+                        }else{
+                            /** если остаток рулона после добавления этой позиции будет меньше чем минимальный ролик в массиве -> не трогаем его и переходим дальше*/
+                            continue;
+                        }
+                        /** если ширина рулона попадает в требуемый диапазон */
+                        if (($total_width < $max_width_of_roll) and ($total_width > $min_width_of_roll)){
+                            /** убираем из  cut_array позиции, которые вошли temp_rolls*/
+                                    for($y=0; $y < count($temp_roll);$y++){
+                                        $deleted = false;
+                                        for ($c = 0; $c < count($this->cut_array);$c++){
+                                            if(($temp_roll[$y] == $this->cut_array[$c])&(!$deleted)){
+                                                /** удаляем из cut_array запись, существующую в temp_array */
+                                                array_splice($this->cut_array,$c,1);
+                                                $deleted = true;
+                                           }
+                                        }
+                                    }
+                            /** добавляем собранный рулон в completed_rolls */
+                            array_push($this->completed_rolls, $temp_roll);
+                            /** увеличиваем счетчик успешно собранных рулонов */
+                            $count_of_completed_rolls++;
+                            $this->$round_complete = true;
+                        }
+                  //  $x++;
+                    }
+                    /** конец процедуры сборки одного рулона */
         }
 
         $this->not_cutted_rolls = $this->cut_array;
