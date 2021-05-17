@@ -45,6 +45,8 @@ $result = show_order($order_number);
 /** Переменная для подсчета суммы фильтров в заявке */
 $filter_count_in_order = 0;
 
+
+
 /** Переменная для подсчета количества сделанных фильтров */
 $filter_count_produced = 0;
 

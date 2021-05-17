@@ -125,14 +125,15 @@ class Planned_order
         for ($x = 0; $x < count($this->initial_order); $x++){
             $temp = array();
             array_push($temp, $this->initial_order[$x][0]);
-          array_push($temp, $this->initial_order[$x][2]);
-          array_push($temp, $this->initial_order[$x][3]);
-          $repeat_times = $this->initial_order[$x][6];
-          $y=0;
-          do {
+            array_push($temp, $this->initial_order[$x][2]);
+            array_push($temp, $this->initial_order[$x][3]);
+            $repeat_times = $this->initial_order[$x][6];
+            $y=0;
+            do {
+               if ($this->initial_order[$x][6] == 0){break;};
               array_push($this->cut_array,  $temp);
               $y++;
-          }while($y < $repeat_times);
+            }while($y < $repeat_times);
         }
     }
 
@@ -249,13 +250,13 @@ class Planned_order
 
             /** Заносим в талицу валки */
             echo "<tr>";
-            echo "<td style='font-size:11pt; border: 1px solid black' colspan='".(count($test_array)+1)."'>Бухта ".$roll_initial_width." мм, бумага гладкая, остаток ".$ostatok." мм</td>";
+            echo "<td style='font-size:16pt; border: 1px solid black' colspan='".(count($test_array)+1)."'>Бухта ".$roll_initial_width." мм, бумага гладкая, остаток ".$ostatok." мм</td>";
             echo "</tr>";
             echo "<tr>";
             for($y = 0; $y < count($test_array);$y++){
                 /** Высчитываем ширину рулона в масштабе 1/2 */
-                $roll_size = $test_array[$y][2]/2;
-                echo "<td width=".$roll_size." style='font-size:9pt; border: 1px solid black' >";
+                $roll_size = $test_array[$y][2]/1.5;
+                echo "<td width=".$roll_size." style='font-size:14pt; border: 1px solid black' >";
                 echo $test_array[$y][0]."<br>";
                 echo $test_array[$y][1]."<br>";
                 echo "<b>".$test_array[$y][2]."</b> мм<br>";
@@ -331,6 +332,8 @@ class Planned_order
      * пример: initial_order{ AF1601, 284, 48, 199, 60, 85,[3]} => cut_array{AF1601, 48, 199;
      *                                                                       AF1601, 48, 199;
      *                                                                       AF1601, 48, 199}
+     * ---------------надо добавить суммирование позиций по 0,2+0,8 к примеру и затем подбивать количество необходимое
+     * ---------------надо добавить возможность кроить одну позицию в одной бухте
      *
      * 3)отсортировываем массив по высоте валков (pp_height)
      *
@@ -346,7 +349,7 @@ class Planned_order
      *
      */
 
-    /** Выполняем раскрой */
+    /** Функция раскроя */
    public function cut_execute($width_of_main_roll, $max_gap, $min_gap){
 
         /** @var  $count_of_completed_rolls - количество успешно собраных рулонов */
